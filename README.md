@@ -12,11 +12,11 @@ Technology should serve people, not add complexity. ŌKUMA.dev reflects that app
 
 The website is designed to grow beyond a single platform or type of tool. Projects are organized by category, giving current open-source work a home while leaving room for future products and experiments.
 
-AI-native products describe the brand’s direction—not a claim that every listed project includes AI features. The current collection consists of Omarchy desktop extensions.
+AI-native products describe the brand’s direction—not a claim that every listed project includes AI features. The current collection includes five open-source projects across two categories: Omarchy desktop extensions and YouTube user scripts.
 
 ## Project collection
 
-Each project card introduces the tool, highlights its key features, and links directly to its source code and documentation.
+Each project card introduces the tool, highlights its key features, and links directly to its source code, plus documentation for Omarchy extensions or installation for user scripts.
 
 ### Omarchy
 
@@ -30,15 +30,31 @@ Three focused tools for **Omarchy’s Quickshell-based system desktop**:
 
 These are independent community projects, **not official Omarchy projects, standalone applications, or tools for arbitrary Linux desktops**. Check each repository for installation instructions and compatibility requirements.
 
-The desktop visuals on the website are interface **illustrations**, not actual project screenshots.
+### User Script
+
+Two browser user scripts from [Okumai/UserScripts](https://github.com/Okumai/UserScripts) for a cleaner, smoother **YouTube** experience:
+
+| Project | Purpose | Highlights |
+| --- | --- | --- |
+| [Auto Hide YouTube Header](https://github.com/Okumai/UserScripts/tree/master/AutoHideYouTubeHeader) | Reclaim space on YouTube watch and Shorts pages without losing access to search. | Automatically hide the header, reveal floating search on upward scroll, and focus native ad-skip buttons for Enter or Space. |
+| [Auto YouTube Shorts](https://github.com/Okumai/UserScripts/tree/master/AutoYouTubeShorts) | Keep Shorts playback flowing with configurable player controls. | Automatically advance to the next Short, preload videos, toggle ad skipping, and show or hide video information. |
+
+Install a browser user-script manager such as **Tampermonkey** or **Violentmonkey**, then open the appropriate installation link and confirm installation in the manager:
+
+- [Install Auto Hide YouTube Header](https://github.com/Okumai/UserScripts/raw/refs/heads/master/AutoHideYouTubeHeader/AutoHideYouTubeHeader.user.js)
+- [Install Auto YouTube Shorts](https://github.com/Okumai/UserScripts/raw/refs/heads/master/AutoYouTubeShorts/AutoYouTubeShorts.user.js)
+
+These scripts are independent of Omarchy and are **not affiliated with YouTube**. Report issues in the [UserScripts repository](https://github.com/Okumai/UserScripts/issues).
+
+The desktop and script visuals on the website are interface **illustrations**, not actual project screenshots.
 
 ## Website experience
 
-- **Category-based discovery:** the current Omarchy collection is grouped together, with a structure that supports additional categories as new projects are added.
+- **Category-based discovery:** five projects are grouped into **Omarchy** (three desktop extensions) and **User Script** (two YouTube scripts), with a structure that supports additional categories.
 - **A restrained visual identity:** warm off-white surfaces, muted greens, custom interface illustrations, and consistent ŌKUMA.dev branding.
 - **Responsive layouts:** project cards and navigation adapt to desktop, tablet, and mobile screens.
 - **A custom language picker:** a coordinated dropdown with current-language indicators, keyboard support, Escape-to-close, and outside-click dismissal.
-- **Direct access to the work:** source code and documentation links for every project, plus a link to the author’s GitHub profile.
+- **Direct access to the work:** source code links for every project, documentation for desktop extensions, direct installation links for user scripts, and a link to the author’s GitHub profile.
 
 ## Five languages, one home
 
@@ -58,7 +74,7 @@ The selected language is remembered locally in the browser. If browser storage i
 
 ## Openness and privacy
 
-The three featured Omarchy projects publish their code under the MIT license. Their individual repositories contain the applicable license notices and contribution information.
+All five featured projects publish their code under the MIT license. The Omarchy repositories and the user scripts’ metadata contain the applicable license information; consult each repository for contribution details.
 
 Production builds include **Vercel Web Analytics** for aggregate traffic measurement, including page views, visitors, and referrers. Vercel Web Analytics does not use tracking cookies. The integration runs once on page load, not on language changes, and is disabled in the Vite development server. No custom events are collected.
 
