@@ -1,6 +1,10 @@
 import './style.css';
 import { languages, translations } from './locales.js';
 import { categories } from './projects.js';
+import { inject } from '@vercel/analytics';
+
+// Initialize once, outside render(), so language changes do not add trackers.
+if (import.meta.env.PROD) inject({ mode: 'production' });
 
 const icons = {
   arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
@@ -70,7 +74,7 @@ function render() {
         <nav class="category-navigation" aria-label="${t.categories}">${categories.map(category => `<a class="category-link" href="#category-${category.id}">${svg('grid')}${category.name}<span>${String(category.projects.length).padStart(2, '0')}</span></a>`).join('')}</nav>
         ${categories.map(category => `<section class="project-category" id="category-${category.id}" aria-labelledby="category-${category.id}-heading">
           <div class="category-heading"><h3 id="category-${category.id}-heading">${category.name}</h3><p>${t[category.descriptionKey]}</p></div>
-          <div class="project-grid">${category.projects.map((project, index) => projectCard(project.name, project.key, String(index + 1).padStart(2, '0'), t)).join('')}</div>
+          <div class="project-grid">${category.projects.map((project, index) => projectCard(project, String(index + 1).padStart(2, '0'), t)).join('')}</div>
           <p class="compatibility">${svg('grid')}<span>${t[category.compatibilityKey]}</span></p>
         </section>`).join('')}
       </section>
@@ -107,12 +111,17 @@ function render() {
     if (!picker.contains(event.relatedTarget)) picker.open = false;
   });
 }
-function projectCard(name, key, number, t) {
-  let visual;
+function projectCard(project, number, t) {
+  const { name, key, sourceUrl, installUrl } = project;
+  const isScript = Boolean(installUrl);
+  const title = isScript ? name : `Okuma${name}`;
+  const source = sourceUrl || repo(title);
+  let visual = '';
+  if (isScript) visual = `<div class="script-preview"><div class="script-search">${svg('globe')}<span>YouTube</span>${svg('code')}</div><div class="script-player ${key === 'youtubeShorts' ? 'script-player-shorts' : ''}">${svg(key === 'youtubeShorts' ? 'down' : 'browser')}</div><div class="script-controls">${svg(key === 'youtubeShorts' ? 'right' : 'check')}<i></i><i></i></div></div>`;
   if (key === 'dock') visual = `<div class="card-desktop-lines"><i></i><i></i><i></i></div><div class="card-dock">${appIcons(5)}</div>`;
   if (key === 'launch') visual = `<div class="card-launcher"><div class="card-search">${svg('globe')}<span>${t.search}</span></div><div class="card-app-grid">${appIcons()}</div></div>`;
   if (key === 'bar') visual = `<div class="card-bar"><span>09:41</span><span>${svg('sun')} 24°</span><span class="bar-center">${mark}<i></i><i></i><i></i></span><span>${svg('wifi')}${svg('battery')}</span></div><div class="card-widgets"><div class="weather-widget">${svg('sun')}<span>24°<small>18° — 26°</small></span></div><div class="memory-widget"><span>RAM <b>32%</b></span><div class="memory-track"><i></i></div><small>5.1 / 16 GB</small></div></div>`;
-  return `<article class="project-card"><div class="card-visual visual-${key}" aria-hidden="true"><span class="visual-number">${number}</span>${visual}<span class="visual-label">${key === 'bar' ? 'QUICKSHELL' : 'OMARCHY'}</span></div><div class="card-content"><div class="project-name"><span class="project-symbol">${svg(key === 'launch' ? 'grid' : key)}</span><h3>Okuma${name}</h3>${svg('arrow', 'name-arrow')}</div><p class="card-tag">${t[`${key}Tag`]}</p><p class="card-description">${t[`${key}Desc`]}</p><ul class="feature-list">${t[`${key}Features`].map(f => `<li>${f}</li>`).join('')}</ul><div class="card-links">${external(repo(`Okuma${name}`), `${svg('github')}${t.source}${svg('arrow')}`)}${external(`${repo(`Okuma${name}`)}#readme`, `${t.docs}${svg('right')}`)}</div></div></article>`;
+  return `<article class="project-card"><div class="card-visual visual-${key}" aria-hidden="true"><span class="visual-number">${number}</span>${visual}<span class="visual-label">${isScript ? 'USER SCRIPT' : key === 'bar' ? 'QUICKSHELL' : 'OMARCHY'}</span></div><div class="card-content"><div class="project-name"><span class="project-symbol">${svg(isScript ? 'code' : key === 'launch' ? 'grid' : key)}</span><h3>${title}</h3>${svg('arrow', 'name-arrow')}</div><p class="card-tag">${t[`${key}Tag`]}</p><p class="card-description">${t[`${key}Desc`]}</p><ul class="feature-list">${t[`${key}Features`].map(f => `<li>${f}</li>`).join('')}</ul><div class="card-links">${external(source, `${svg('github')}${t.source}${svg('arrow')}`)}${external(installUrl || `${source}#readme`, `${isScript ? t.install : t.docs}${svg('right')}`)}</div></div></article>`;
 }
 document.addEventListener('pointerdown', event => {
   const picker = document.querySelector('.language-picker');

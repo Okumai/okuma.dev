@@ -11,9 +11,25 @@ test('Omarchy contains all three tools and categories have translated descriptio
     for (const dictionary of Object.values(translations)) {
       assert.ok(dictionary[category.descriptionKey]);
       assert.ok(dictionary[category.compatibilityKey]);
-      for (const project of category.projects) assert.ok(dictionary[`${project.key}Desc`]);
+      for (const project of category.projects) {
+        for (const suffix of ['Tag', 'Desc', 'Features']) assert.ok(dictionary[`${project.key}${suffix}`]);
+      }
     }
   }
+});
+
+test('User Script contains both YouTube scripts with source and install links', () => {
+  const category = categories.find(category => category.id === 'user-script');
+  assert.equal(category.name, 'User Script');
+  assert.deepEqual(category.projects.map(project => project.key), ['youtubeHeader', 'youtubeShorts']);
+  for (const [index, folder] of ['AutoHideYouTubeHeader', 'AutoYouTubeShorts'].entries()) {
+    const project = category.projects[index];
+    assert.equal(project.sourceUrl, `https://github.com/Okumai/UserScripts/tree/master/${folder}`);
+    assert.equal(project.installUrl, `https://github.com/Okumai/UserScripts/raw/refs/heads/master/${folder}/${folder}.user.js`);
+  }
+  const total = categories.reduce((sum, category) => sum + category.projects.length, 0);
+  assert.equal(total, 5);
+  for (const dictionary of Object.values(translations)) assert.equal(Number(dictionary.count.match(/\d+/)[0]), total);
 });
 
 test('all five languages have a complete, non-empty translation set', () => {

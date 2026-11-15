@@ -60,7 +60,9 @@ The selected language is remembered locally in the browser. If browser storage i
 
 The three featured Omarchy projects publish their code under the MIT license. Their individual repositories contain the applicable license notices and contribution information.
 
-The website includes no analytics or tracking scripts. It stores only the language preference in localStorage under `okuma-language`. DM Sans and Manrope are loaded from Google Fonts, with system-font fallbacks when that service is unavailable.
+Production builds include **Vercel Web Analytics** for aggregate traffic measurement, including page views, visitors, and referrers. Vercel Web Analytics does not use tracking cookies. The integration runs once on page load, not on language changes, and is disabled in the Vite development server. No custom events are collected.
+
+The website stores the language preference in localStorage under `okuma-language`. DM Sans and Manrope are loaded from Google Fonts, with system-font fallbacks when that service is unavailable.
 
 ## Development
 
@@ -99,3 +101,14 @@ To add a category, register it in `src/projects.js` and provide its description 
 The production output is a static site. Vercel settings are included in `vercel.json`: import this repository with **Vite** as the framework, **`npm run build`** as the build command, and **`dist`** as the output directory. No environment variables are needed.
 
 To use `okuma.dev`, add the domain in the Vercel project settings and follow the DNS instructions provided there. Repository configuration alone does not deploy the site or configure the domain.
+
+### Vercel Web Analytics
+
+The vanilla JavaScript integration uses `@vercel/analytics` in `src/main.js`. To start collecting traffic data:
+
+1. Open this project in the **Vercel dashboard**.
+2. Select **Analytics** and click **Enable** for Web Analytics.
+3. Deploy (or redeploy) the updated repository after enabling Analytics.
+4. Visit the deployed site, then return to **Analytics** to view traffic data. Data may take a few minutes to appear; ad blockers can prevent collection.
+
+No API keys, extra environment variables, or changes to `vercel.json` are required. The production tracker is served from `/_vercel/insights/script.js`; analytics collection requires a Vercel deployment with Web Analytics enabled. A local `npm run preview` serves the production bundle but does not provide Vercel’s analytics endpoints.
